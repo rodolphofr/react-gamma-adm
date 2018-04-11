@@ -10,6 +10,9 @@ React -> Lib para construir UI. (Resolve um problema expecifico).
   * className no atributo da tag é utilizado pois o babel se perde achando q o atributo class eh uma classe do js
   * Cada componente deve ter um script index.js para ser chamado, contendo o conteudo principal
   * Sempre é necessário passar o atributo, não existe herança de uma tag filha para a tag pai
+  * Sempre é necessário importar o React, pois o globalmente o JSX fica disponível no arquivo em q o React foi importado
 
 ## Estudar BEM para compreender componentização do React
 ## https://standardjs.com/
+
+## Anjana Vakil Learning functional programming 

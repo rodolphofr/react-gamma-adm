@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
+// CSS Global
+import './assets/css/reset.css'
+import './assets/css/container.css'
+import './assets/css/btn.css'
+import './assets/css/icon.css'
+import './assets/css/iconHeart.css'
+import './assets/css/notificacao.css'
+
+import './assets/css/novoTweet.css'
+
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-// pega tudo o que esta sendo desenvolvido em memoria
-// e cola na pagina
-// ReactDOM verifica e compara tudo o que possui nele e tudo o que possui no DOM
-// Quando encontra a diferença o mesmo coloca esta diferenca no DOM
-
-// Componente React
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
