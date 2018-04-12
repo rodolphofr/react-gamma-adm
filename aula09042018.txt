@@ -16,3 +16,6 @@ React -> Lib para construir UI. (Resolve um problema expecifico).
 ## https://standardjs.com/
 
 ## Anjana Vakil Learning functional programming 
+## Class Fields
+## Painting page
+## surge.sh

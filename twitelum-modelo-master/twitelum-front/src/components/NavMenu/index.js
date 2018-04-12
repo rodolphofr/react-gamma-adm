@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './navMenu.css'
 
 class NavMenu extends Component {
-    render() {
+    render() { // renderiza o tempo todo
         return (
             <nav className="navMenu">
                 <ul className="navMenu__lista">
