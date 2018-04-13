@@ -1,15 +1,14 @@
 .error404 {
   font-family: 'Arial', sans-serif;
   font-size: 150%;
+  font-weight: bold;
   color: red;
   text-align: center;
   padding-top: 85px;
-  font-weight: bold;
   width: 200px;
   height: 200px;
   margin: 0 auto;
-  background-color: #e3d019;
-  border: solid;
-  border-color: black;
+  background-color: yellow;
+  border: solid black;
   box-sizing: border-box;
 }

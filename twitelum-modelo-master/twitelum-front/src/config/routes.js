@@ -1,16 +1,32 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import React, { Component } from 'react'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
 import Home from '../pages/Home';
 import LoginPage from '../pages/LoginPage'
-import Error404Page from '../pages/errors/404'
+import NotFoundPage from '../pages/errors/404'
+
+class PrivateRoute extends Component {
+
+  isAutheticated = () => {
+    return localStorage.getItem("TOKEN") != null
+  }
+
+  render() {
+    if (this.isAutheticated()) {
+        return ( <Route {...this.props} /> )
+    }
+
+    return ( <Redirect to="/login"/> )
+  }
+
+}
 
 const routes = () => {
   return (
     <Switch>
-        <Route path="/" exact component={ Home }/>
+        <PrivateRoute path="/" exact component={ Home }/>
         <Route path="/login" component={ LoginPage }/>
-        <Route path="*" component={ Error404Page }/>
+        <Route path="*" component={ NotFoundPage }/>
     </Switch>
   )
 }

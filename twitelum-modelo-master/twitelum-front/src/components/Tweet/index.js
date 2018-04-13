@@ -2,15 +2,19 @@ import React, { Component } from 'react'
 import './tweet.css'
 
 class Tweet extends Component {
+
     render() {
+        const tweetInfo = this.props.tweetInfo
+        const usuario = tweetInfo.usuario
+
         return (
             <article className="tweet">
                 <div className="tweet__cabecalho">
-                    <img className="tweet__fotoUsuario" src="https://placehold.it/50x50" alt="" />
-                    <span className="tweet__nomeUsuario">{ this.props.name }</span>
-                    <a href=""><span className="tweet__userName">@{ this.props.userName }</span></a>
+                    <img className="tweet__fotoUsuario" src={usuario.foto} alt="" />
+                    <span className="tweet__nomeUsuario">{ `${usuario.nome} ${usuario.sobrenome}` }</span>
+                    <a href=""><span className="tweet__userName">@{usuario.login}</span></a>
                 </div>
-                <p className="tweet__conteudo"><span>{this.props.text}</span></p>
+                <p className="tweet__conteudo"><span>{tweetInfo.conteudo}</span></p>
                 <footer className="tweet__footer">
                     <button className="btn btn--clean">
                         <svg className="icon icon--small iconHeart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.5 47.5">

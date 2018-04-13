@@ -5,6 +5,7 @@ import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
+import HttpService from '../../services/HttpService.js'
 
 class App extends Component {
 
@@ -25,21 +26,35 @@ class App extends Component {
     event.preventDefault()
 
     const newTweet = this.state.newTweet
+    const token = localStorage.getItem("TOKEN")
 
     if (newTweet) {
-      this.setState({
-        tweets : [newTweet, ...this.state.tweets],
-        newTweet : ''
+      fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${token}`, {
+        method: 'POST',
+        body: JSON.stringify({ conteudo : newTweet })
       })
+      .then(response => response.json())
+      .then(tweetInfo => {
+        this.setState({
+          tweets : [tweetInfo, ...this.state.tweets],
+          newTweet : ''
+        })
+      })
+      .catch(error => console.log(error.json()))
     }
+  }
+
+  componentDidMount() {
+    HttpService.get('http://localhost:3001/tweets')
+      .then(tweets => this.setState({ tweets }))
+      .catch(error => console.log(error))
   }
 
   tweets() {
     const tweets = this.state.tweets;
 
     const newTweets = tweets.map(
-      (tweetText, index) =>
-        <Tweet key={ tweetText + index } text={tweetText} name="Rodolpho Rodrigues" userName="rodolphofr"/>
+      (tweet, index) => <Tweet key={ tweet.conteudo + index } tweetInfo={tweet}/>
     )
 
     return newTweets;
@@ -52,7 +67,7 @@ class App extends Component {
     return (
       <Fragment>
         <Cabecalho>
-            <NavMenu usuario="@rodolphofr" />
+            <NavMenu usuario="@rodolphof" />
         </Cabecalho>
         <div className="container">
             <Dashboard>
