@@ -30,6 +30,7 @@ class LoginPage extends Component {
     })
     .then(responseJSON => {
       localStorage.setItem('TOKEN', responseJSON.token)
+      localStorage.setItem('USER', infoLogin.login)
       this.props.history.push('/') // window api
     })
     .catch(error => {

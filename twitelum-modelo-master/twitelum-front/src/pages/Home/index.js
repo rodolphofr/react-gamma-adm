@@ -54,7 +54,7 @@ class App extends Component {
     const tweets = this.state.tweets;
 
     const newTweets = tweets.map(
-      (tweet, index) => <Tweet key={ tweet.conteudo + index } tweetInfo={tweet}/>
+      (tweet, index) => <Tweet key={ tweet.id } tweetInfo={tweet}/>
     )
 
     return newTweets;
@@ -67,7 +67,7 @@ class App extends Component {
     return (
       <Fragment>
         <Cabecalho>
-            <NavMenu usuario="@rodolphof" />
+              <NavMenu usuario={ `@${localStorage.getItem('USER')}` } />
         </Cabecalho>
         <div className="container">
             <Dashboard>
