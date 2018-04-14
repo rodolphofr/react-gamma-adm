@@ -3,6 +3,7 @@ import './tweet.css'
 
 class Tweet extends Component {
 
+
     render() {
         const tweetInfo = this.props.tweetInfo
         const usuario = tweetInfo.usuario

@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, {
+    Component
+} from 'react'
 import Widget from '../../components/Widget'
 
 import './loginPage.css'
@@ -6,50 +8,51 @@ import './loginPage.css'
 
 class LoginPage extends Component {
 
-  state = {
-    login: '',
-    pass: '',
-    errorMessage: ''
-  }
-
-  doLogin = (event) => {
-    event.preventDefault()
-
-    const infoLogin = {
-      login: this.login.value,
-      senha: this.pass.value
+    state = {
+        login: '',
+        pass: '',
+        errorMessage: ''
     }
 
-    fetch('http://localhost:3001/login', {
-      method: 'POST',
-      body: JSON.stringify(infoLogin)
-    })
-    .then(response => {
-      if (!response.ok) throw response
-      return response.json()
-    })
-    .then(responseJSON => {
-      localStorage.setItem('TOKEN', responseJSON.token)
-      this.props.history.push('/') // window api
-    })
-    .catch(error => {
-      error.json().then(response => this.setState({ errorMessage: response.message }))
-    })
+    doLogin = (event) => {
+        event.preventDefault()
 
-  }
+        const infoLogin = {
+            login: this.login.value,
+            senha: this.pass.value
+        }
 
-  renderErrorMesssage = () => {
-    return (
-      <div className="loginPage__errorBox">
-          { this.state.errorMessage }
-      </div>
-    )
-  }
+        fetch('http://localhost:3001/login', {
+                method: 'POST',
+                body: JSON.stringify(infoLogin)
+            })
+            .then(response => {
+                if (!response.ok) throw response
+                return response.json()
+            })
+            .then(responseJSON => {
+                localStorage.setItem('TOKEN', responseJSON.token)
+                this.props.history.push('/') // window api
+            })
+            .catch(error => {
+                error.json().then(response => this.setState({
+                    errorMessage: response.message
+                }))
+            })
 
-  render() {
+    }
 
-    return (
-        <div className="loginPage">
+    renderErrorMesssage = () => {
+        return ( <div className = "loginPage__errorBox" > 
+                    { this.state.errorMessage} 
+                 </div>
+        )
+    }
+
+    render() {
+
+        return (
+            <div className="loginPage">
             <div className="container">
                 <Widget>
                     <h1 className="loginPage__title">Twitelum</h1>
@@ -80,8 +83,8 @@ class LoginPage extends Component {
                 </Widget>
             </div>
         </div>
-    )
-  }
+        )
+    }
 }
 
 
