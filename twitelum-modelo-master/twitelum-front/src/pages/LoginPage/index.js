@@ -23,22 +23,22 @@ class LoginPage extends Component {
         }
 
         fetch('http://localhost:3001/login', {
-                method: 'POST',
-                body: JSON.stringify(infoLogin)
-            })
-            .then(response => {
-                if (!response.ok) throw response
-                return response.json()
-            })
-            .then(responseJSON => {
-                localStorage.setItem('TOKEN', responseJSON.token)
-                this.props.history.push('/') // window api
-            })
-            .catch(error => {
-                error.json().then(response => this.setState({
-                    errorMessage: response.message
-                }))
-            })
+            method: 'POST',
+            body: JSON.stringify(infoLogin)
+        })
+        .then(response => {
+            if (!response.ok) throw response
+            return response.json()
+        })
+        .then(responseJSON => {
+            localStorage.setItem('TOKEN', responseJSON.token)
+            localStorage.setItem('USER', infoLogin.login)
+            this.props.history.push('/') // window api
+        })
+        .catch(error => {
+            error.json().then(response => this.setState({ errorMessage: response.message }))
+        })
+
 
     }
 

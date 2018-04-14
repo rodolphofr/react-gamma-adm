@@ -5,16 +5,16 @@ import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
-import HttpService from '../../services/HttpService.js'
 
-class App extends Component {
+class Home extends Component {
 
   constructor() {
       super()
 
       this.state = {
         newTweet : '',
-        tweets : []
+        tweets : [],
+        tweetActivated: {}
       }
 
       // por q o contexto do react eh dinamico e ele nao sabe quem eh o this quando o mesmo eh chamado dentro de um metodo de classe
@@ -30,14 +30,14 @@ class App extends Component {
 
     if (newTweet) {
       fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${token}`, {
-        method: 'POST',
-        body: JSON.stringify({ conteudo : newTweet })
+          method: 'POST',
+          body: JSON.stringify({ conteudo : newTweet })
       })
       .then(response => response.json())
       .then(tweetInfo => {
-        this.setState({
-          tweets : [tweetInfo, ...this.state.tweets],
-          newTweet : ''
+          this.setState({
+              tweets : [tweetInfo, ...this.state.tweets],
+              newTweet : ''
         })
       })
       .catch(error => console.log(error.json()))
@@ -45,19 +45,40 @@ class App extends Component {
   }
 
   componentDidMount() {
-    HttpService.get('http://localhost:3001/tweets')
-      .then(tweets => this.setState({ tweets }))
-      .catch(error => console.log(error))
+    const token = localStorage.getItem("TOKEN")
+
+    fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${token}`)
+        .then(response => response.json())
+        .then(tweets => this.setState({ tweets }))
   }
 
   tweets() {
-    const tweets = this.state.tweets;
+      const tweets = this.state.tweets;
 
-    const newTweets = tweets.map(
-      (tweet, index) => <Tweet key={ tweet.conteudo + index } tweetInfo={tweet}/>
-    )
+      const newTweets = tweets.map(
+          tweet => <Tweet key={ tweet._id }
+                          tweetInfo={ tweet }
+                          removeHandler={ () => this.removeTweet(tweet._id) }
+                          handleModal={ () => this.openTweetModal(tweet._id) } />
+      )
 
-    return newTweets;
+      return newTweets;
+  }
+
+  removeTweet = (tweetId) => {
+      const tweets = this.state.tweets.filter(tweet => tweet._id !== tweetId)
+      const token  = localStorage.getItem('TOKEN')
+
+      fetch(`http://localhost:3001/tweets/${tweetId}?X-AUTH-TOKEN=${token}`, {
+          method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(response => this.setState({ tweets }))
+  }
+
+  openTweetModal = (tweetId) => {
+      const tweetActivated = this.state.tweets.find(tweet => tweet._id === tweetId)
+      this.setState({ tweetActivated })
   }
 
   render() {
@@ -67,7 +88,7 @@ class App extends Component {
     return (
       <Fragment>
         <Cabecalho>
-            <NavMenu usuario="@rodolphof" />
+              <NavMenu usuario={ `@${localStorage.getItem('USER')}` } />
         </Cabecalho>
         <div className="container">
             <Dashboard>
@@ -104,9 +125,17 @@ class App extends Component {
                 </Widget>
             </Dashboard>
         </div>
+        {
+          this.state.tweetActivated._id &&
+          <Tweet
+              removeHandler={() => this.removeTweet(this.state.tweetActivated._id)}
+              tweetInfo={this.state.tweetActivated} />
+        }
       </Fragment>
     );
   }
 }
 
-export default App;
+
+
+export default Home;
