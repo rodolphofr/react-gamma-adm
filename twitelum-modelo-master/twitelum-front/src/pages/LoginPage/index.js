@@ -42,13 +42,6 @@ class LoginPage extends Component {
 
     }
 
-    renderErrorMesssage = () => {
-        return ( <div className = "loginPage__errorBox" > 
-                    { this.state.errorMessage} 
-                 </div>
-        )
-    }
-
     render() {
 
         return (
@@ -73,7 +66,12 @@ class LoginPage extends Component {
                                    id="senha"
                                    name="senha"/>
                         </div>
-                        { this.state.errorMessage ? this.renderErrorMesssage() : '' }
+                        { 
+                            this.state.errorMessage && 
+                            <div className = "loginPage__errorBox">  
+                                { this.state.errorMessage } 
+                            </div>
+                        }
                         <div className="loginPage__inputWrap">
                             <button className="loginPage__btnLogin" type="submit">
                                 Logar
