@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import './error404.css'
+import './notFound.css'
 
-class Error404Page extends Component {
+class NotFoundPage extends Component {
   render() {
     return <div className="error404">PUNK!</div>
   }
 }
 
-export default Error404Page
+export default NotFoundPage
