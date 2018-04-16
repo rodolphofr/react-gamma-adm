@@ -88,7 +88,7 @@ class Home extends Component {
     return (
       <Fragment>
         <Cabecalho>
-              <NavMenu usuario={ `@${localStorage.getItem('USER')}` } />
+            <NavMenu usuario={ `@${localStorage.getItem('USER')}` } />
         </Cabecalho>
         <div className="container">
             <Dashboard>
