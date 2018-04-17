@@ -5,8 +5,14 @@ import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
+import Modal from '../../components/Modal'
+import PropTypes from 'prop-types'
 
 class Home extends Component {
+  // sem isso o store nao funciona
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
 
   constructor() {
       super()
@@ -49,8 +55,19 @@ class Home extends Component {
 
     fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${token}`)
         .then(response => response.json())
-        .then(tweets => this.setState({ tweets }))
+        .then(tweets => {
+            this.context.store.dispatch({ type: 'CARREGA_TWEETS', tweets })
+        })
   }
+
+  componentWillMount() {
+      // subscribe eh chamado sempre que disparo um store.dispatch
+      // espera acontecer algum dispatch
+      this.context.store.subscribe(() => {
+        this.setState({ tweets: this.context.store.getState() })
+      })
+  }
+
 
   tweets() {
       const tweets = this.state.tweets;
@@ -59,7 +76,7 @@ class Home extends Component {
           tweet => <Tweet key={ tweet._id }
                           tweetInfo={ tweet }
                           removeHandler={ () => this.removeTweet(tweet._id) }
-                          handleModal={ () => this.openTweetModal(tweet._id) } />
+                          handleModal={ (event) => this.openTweetModal(event, tweet._id) } />
       )
 
       return newTweets;
@@ -73,17 +90,30 @@ class Home extends Component {
           method: 'DELETE'
       })
       .then(response => response.json())
-      .then(response => this.setState({ tweets }))
+      .then(response => this.setState({ tweets, tweetActivated: {} }))
   }
 
-  openTweetModal = (tweetId) => {
-      const tweetActivated = this.state.tweets.find(tweet => tweet._id === tweetId)
-      this.setState({ tweetActivated })
+  openTweetModal = (event, tweetId) => {
+      //pega o elemento pai mais proximo q tenha a classe especificada
+      const ignoreModal = event.target.closest('.ignoreModal')
+
+      if (!ignoreModal) {
+        const tweetActivated = this.state.tweets.find(tweet => tweet._id === tweetId)
+        this.setState({ tweetActivated })
+      }
+
+  }
+
+  closeModal = (event) => {
+      const isModal = event.target.classList.contains('modal')
+
+      if (isModal) this.setState({ tweetActivated: {} })
   }
 
   render() {
     const tweetLength = this.state.newTweet.length;
     const tweets = this.tweets();
+    const tweetActivated = this.state.tweetActivated
 
     return (
       <Fragment>
@@ -126,16 +156,18 @@ class Home extends Component {
             </Dashboard>
         </div>
         {
-          this.state.tweetActivated._id &&
-          <Tweet
-              removeHandler={() => this.removeTweet(this.state.tweetActivated._id)}
-              tweetInfo={this.state.tweetActivated} />
+          tweetActivated._id &&
+          <Modal isOpen={ tweetActivated._id } closeModal={ this.closeModal }>
+            <Widget>
+              <Tweet
+                  removeHandler={() => this.removeTweet(this.state.tweetActivated._id)}
+                  tweetInfo={this.state.tweetActivated} />
+            </Widget>
+          </Modal>
         }
       </Fragment>
     );
   }
 }
-
-
 
 export default Home;

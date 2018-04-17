@@ -14,10 +14,19 @@ import './assets/css/iconHeart.css'
 import './assets/css/notificacao.css'
 import './assets/css/novoTweet.css'
 
+
+// coisas do Reduz
+// necessario importar no index.js raiz
+
+import { Provider } from 'react-redux'
+import store from './store'
+
 const routes = (
-  <BrowserRouter>
-    <Routes />
-  </BrowserRouter>
+  <Provider store={ store }>
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
+  </Provider>
 )
 
 ReactDOM.render(routes, document.getElementById('root'));
