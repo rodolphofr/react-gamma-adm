@@ -19,3 +19,24 @@ React -> Lib para construir UI. (Resolve um problema expecifico).
 ## Class Fields
 ## Painting page
 ## surge.sh
+## plugin json view para chrome
+## === compara o tipo e o valor
+## Destructuring js
+
+## array, funcao, objeto e evento (estudar e se aprofundar)
+## Curo circuito
+## Tadeu Zagallo ver palestra sobre React Native
+## LEr doc do proptypes
+## default no export eh para que a chamada do objeto seja direta
+## Pubsub baixar
+## Flux do Facebook
+## REdux compartilhara os dados q eu quero compartilhar com todo mundo
+
+Ciclo de vida do componente
+
+em ordem 
+
+inicializa o contructor
+depoois o metodo componentWillMount // executa antes do render - colocar quando eh sincrono (se o setState for sincrono))
+depois render
+depois componentDidMount - colocar quando é assincrono, (certeza q o HTML ja existe e o render ja foi executado (se o steState for assincrono)
