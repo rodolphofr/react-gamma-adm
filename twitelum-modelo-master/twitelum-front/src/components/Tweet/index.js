@@ -58,7 +58,7 @@ class Tweet extends Component {
                 </footer>
                 {
                     tweetInfo.removivel &&
-                    <button className="btn btn--blue btn--remove" onClick={ this.props.removeHandler }>
+                    <button className="btn btn--blue btn--remove ignoreModal" onClick={ this.props.removeHandler }>
                         X
                     </button>
                 }

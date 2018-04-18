@@ -4,9 +4,11 @@ import NavMenu from '../../components/NavMenu'
 import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
-import Tweet from '../../components/Tweet'
+import Tweet from '../../containers/TweetPadrao'
 import Modal from '../../components/Modal'
 import PropTypes from 'prop-types'
+
+import * as TweetsAPI from '../../apis/TweetsAPI'
 
 class Home extends Component {
   // sem isso o store nao funciona
@@ -30,34 +32,12 @@ class Home extends Component {
 
   addTweet(event) {
     event.preventDefault()
-
-    const newTweet = this.state.newTweet
-    const token = localStorage.getItem("TOKEN")
-
-    if (newTweet) {
-      fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${token}`, {
-          method: 'POST',
-          body: JSON.stringify({ conteudo : newTweet })
-      })
-      .then(response => response.json())
-      .then(tweetInfo => {
-          this.setState({
-              tweets : [tweetInfo, ...this.state.tweets],
-              newTweet : ''
-        })
-      })
-      .catch(error => console.log(error.json()))
-    }
+    this.context.store.dispatch(TweetsAPI.add(this.state.newTweet))
+    this.setState({ newTweet: '' })
   }
 
   componentDidMount() {
-    const token = localStorage.getItem("TOKEN")
-
-    fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${token}`)
-        .then(response => response.json())
-        .then(tweets => {
-            this.context.store.dispatch({ type: 'CARREGA_TWEETS', tweets })
-        })
+    this.context.store.dispatch(TweetsAPI.load())
   }
 
   componentWillMount() {
@@ -75,7 +55,6 @@ class Home extends Component {
       const newTweets = tweets.map(
           tweet => <Tweet key={ tweet._id }
                           tweetInfo={ tweet }
-                          removeHandler={ () => this.removeTweet(tweet._id) }
                           handleModal={ (event) => this.openTweetModal(event, tweet._id) } />
       )
 
@@ -83,14 +62,8 @@ class Home extends Component {
   }
 
   removeTweet = (tweetId) => {
-      const tweets = this.state.tweets.filter(tweet => tweet._id !== tweetId)
-      const token  = localStorage.getItem('TOKEN')
-
-      fetch(`http://localhost:3001/tweets/${tweetId}?X-AUTH-TOKEN=${token}`, {
-          method: 'DELETE'
-      })
-      .then(response => response.json())
-      .then(response => this.setState({ tweets, tweetActivated: {} }))
+      this.context.store.dispatch(TweetsAPI.remove(tweetId))
+      this.setState({ tweetActivated: {} })
   }
 
   openTweetModal = (event, tweetId) => {
@@ -106,7 +79,6 @@ class Home extends Component {
 
   closeModal = (event) => {
       const isModal = event.target.classList.contains('modal')
-
       if (isModal) this.setState({ tweetActivated: {} })
   }
 
