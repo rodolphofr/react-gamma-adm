@@ -31,7 +31,7 @@ React -> Lib para construir UI. (Resolve um problema expecifico).
 ## Pubsub baixar
 ## Flux do Facebook
 ## REdux compartilhara os dados q eu quero compartilhar com todo mundo
-
+## Presentational components e Container
 Ciclo de vida do componente
 
 em ordem 
@@ -40,3 +40,7 @@ inicializa o contructor
 depoois o metodo componentWillMount // executa antes do render - colocar quando eh sincrono (se o setState for sincrono))
 depois render
 depois componentDidMount - colocar quando é assincrono, (certeza q o HTML ja existe e o render ja foi executado (se o steState for assincrono)
+
+APIS == regras de negocio
+
+
