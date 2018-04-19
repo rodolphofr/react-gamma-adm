@@ -44,7 +44,10 @@ class Home extends Component {
       // subscribe eh chamado sempre que disparo um store.dispatch
       // espera acontecer algum dispatch
       this.context.store.subscribe(() => {
-        this.setState({ tweets: this.context.store.getState() })
+        this.setState({
+          tweets: this.context.store.getState().tweets.tweets,
+          tweetActivated: this.context.store.getState().tweets.tweetActivated
+        })
       })
   }
 
@@ -71,15 +74,16 @@ class Home extends Component {
       const ignoreModal = event.target.closest('.ignoreModal')
 
       if (!ignoreModal) {
-        const tweetActivated = this.state.tweets.find(tweet => tweet._id === tweetId)
-        this.setState({ tweetActivated })
+        this.context.store.dispatch({ type: 'ADD_TWEET_ATIVO', tweetId })
       }
 
   }
 
   closeModal = (event) => {
       const isModal = event.target.classList.contains('modal')
-      if (isModal) this.setState({ tweetActivated: {} })
+      if (isModal) {
+        this.context.store.dispatch({ type: 'REMOVE_TWEET_ATIVO' })
+      }
   }
 
   render() {
@@ -137,6 +141,14 @@ class Home extends Component {
             </Widget>
           </Modal>
         }
+
+        {
+          this.context.store.getState().notificacao &&
+          <div className="notificacaoMsg">
+            { this.context.store.getState().notificacao }
+          </div>
+        }
+
       </Fragment>
     );
   }

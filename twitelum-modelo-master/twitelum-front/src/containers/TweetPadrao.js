@@ -4,7 +4,12 @@ import * as TweetsAPI from '../apis/TweetsAPI'
 
 const mapDispatchToProps = (dispatch, propsRecebidas) => {
   return {
-    removeHandler: () => dispatch(TweetsAPI.remove(propsRecebidas.tweetInfo._id))
+    removeHandler: () =>  {
+      dispatch(TweetsAPI.remove(propsRecebidas.tweetInfo._id))
+    },
+    handleLike: () => {
+      dispatch(TweetsAPI.like(propsRecebidas.tweetInfo._id))
+    }
   }
 }
 

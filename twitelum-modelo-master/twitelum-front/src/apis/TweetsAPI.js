@@ -32,7 +32,21 @@ export const remove = (tweetId) => {
       method: 'DELETE'
     })
     .then(response => response.json())
-    .then(response => dispatch({ type: 'REMOVE_TWEET', tweetId: tweetId }))
+    .then(response => {
+        dispatch({ type: 'REMOVE_TWEET', tweetId: tweetId })
+        dispatch({ type: 'REMOVE_TWEET_ATIVO', })
+
+        dispatch({ type: 'ADD_NOTIFICACAO', msg: 'Tweet excluído com sucesso!' })
+        setTimeout(() => dispatch({ type: 'REMOVE_NOTIFICACAO' }), 2000)
+      })
   }
 
+}
+
+export const like = (tweetId) => {
+  return (dispatch) => {
+    dispatch({ type: 'LIKE', tweetId })
+    dispatch({ type: 'ADD_NOTIFICACAO', msg: 'Você deu Like!' })
+    setTimeout(() => dispatch({ type: 'REMOVE_NOTIFICACAO' }), 2000)
+  }
 }
